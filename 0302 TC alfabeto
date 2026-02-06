@@ -1,31 +1,28 @@
-def acepta(adf,w):
-    estado= adf["inicio"]
-    rec=[estado]
-
+def acepta(afd, w):
+    estado = afd["inicio"]
+    rec = [estado]
     for s in w:
-      if s not in adf["alfabeto"]:
-        return False,rec
-      if (estado, s) not in adf["delta"]:
+        if s not in afd["alfabeto"]:
+            return False, rec
+        if (estado, s) not in afd["delta"]:
+            return False, rec
+        estado = afd["delta"][(estado, s)]
         rec.append(estado)
-        return False,rec
-      estado = adf["delta"][(estado, s)]
-      rec.append(estado)
-    return (estado in adf["finales"], rec)
+    return (estado in afd["finales"]), rec
 def main():
-    adf = {
+    afd = {
         "alfabeto": {"a", "b"},
         "inicio": "q0",
         "finales": {"q2"},
         "delta": {
             ("q0", "a"): "q1",
-            ("q1", "a"): "q2",
-            ("q0", "b"): "q2",
-        },
-
+            ("q1", "a"): "q1",
+            ("q1", "b"): "q2"
+        }
     }
-    w = input("cadena(a,b): ").strip()
-    aceptada, recorrido = acepta(adf, w)
-
-print("recorrido:", "-".join(recorrido))
-print("aceptada") if aceptada else ("rechazada")
-if __name__ == "__main__":    main()
+    w = input("Cadena (a,b): ").strip()
+    ok, rec = acepta(afd, w)
+    print("Recorrido:", " -> ".join(rec))
+    print("ACEPTADA" if ok else "RECHAZADA")
+if __name__ == "__main__":
+    main()
